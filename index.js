@@ -33,8 +33,13 @@ const users = [
 ];
 app.listen(port, console.log("this port is runnig"));
 
-app.get("/users", function (req, res) {
-  res.send(users);
+app.get("/users", async (req,res) => {
+  try {
+    const mongoUsers= await userlist.find()
+    res.send(mongoUsers)
+  } catch (error) {
+    console.log(error);
+  }
 });
 app.post("/users", function (req, res) {
   const { fName, lName, email, password } = req.body;
@@ -45,5 +50,5 @@ app.post("/users", function (req, res) {
     password,
   });
   newUsers.save();
-  req.send(req.body)
+  res.send(req.body);
 });
